@@ -1,0 +1,19 @@
+<changelist name="Uncommitted_changes_before_Update_at_25_09_2022_8_04_p__m__[Changes]" date="1664154272369" recycled="false" toDelete="true">
+  <option name="PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_25_09_2022_8_04_p__m__[Changes]/shelved.patch" />
+  <option name="DESCRIPTION" value="Uncommitted changes before Update at 25/09/2022 8:04 p. m. [Changes]" />
+  <binary>
+    <option name="BEFORE_PATH" value="target/classes/com/grupo1/BSL/controller/FrontController.class" />
+    <option name="AFTER_PATH" value="target/classes/com/grupo1/BSL/controller/FrontController.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_25_09_2022_8_04_p__m__[Changes]/FrontController.class" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="target/classes/com/grupo1/BSL/service/EmpresaService.class" />
+    <option name="AFTER_PATH" value="target/classes/com/grupo1/BSL/service/EmpresaService.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_25_09_2022_8_04_p__m__[Changes]/EmpresaService.class" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="target/classes/com/grupo1/BSL/service/UsuarioService.class" />
+    <option name="AFTER_PATH" value="target/classes/com/grupo1/BSL/service/UsuarioService.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_25_09_2022_8_04_p__m__[Changes]/UsuarioService.class" />
+  </binary>
+</changelist>

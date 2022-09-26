@@ -1,0 +1,169 @@
+Index: src/main/resources/templates/verEmpresas.html
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><!DOCTYPE html>\r\n<html lang=\"en\" xmlns:th=\"http://www.thymeleaf.org\">\r\n\r\n<head>\r\n    <title>Lista de Empresas </title>\r\n    <meta charset=\"utf-8\">\r\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\r\n    <link rel=\"stylesheet\" href=\"https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css\">\r\n    <link rel=\"stylesheet\" href=\"https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css\">\r\n    <script src=\"https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js\"></script>\r\n    <script src=\"https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js\"></script>\r\n    <script src=\"https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js\"></script>\r\n    <style>\r\n    a{\r\n    color:white;\r\n    }\r\n    a:hover {\r\n    color: black;\r\n    text-decoration:none;\r\n    }\r\n</style>\r\n</head>\r\n<body>\r\n<div class=\"container\">\r\n\r\n    <h1> Lista de Empresas</h1>\r\n    <!--Dibujamos la tabla-->\r\n\r\n    <table class=\" table table-bordered border-primary table-hover table-success \">\r\n    <tr>\r\n        <th>ID</th>\r\n        <th>Nombre</th>\r\n        <th>Dirección</th>\r\n        <th>Telefono</th>\r\n        <th>NIT</th>\r\n        <th>Eliminar</th>\r\n        <th>Empleados</th>\r\n        <th>Movimientos</th>\r\n\r\n\r\n\r\n\r\n    </tr>\r\n\r\n      <tr th:each=\"empresa : ${emplist}\">\r\n        <td th:text=\"${empresa.id}\"></td>\r\n        <td th:text=\"${empresa.nombre}\"></td>\r\n        <td th:text=\"${empresa.direccion}\"></td>\r\n        <td th:text=\"${empresa.telefono}\"></td>\r\n        <td th:text=\"${empresa.NIT}\"></td>\r\n          <td><button type=\"button\" class=\"btn btn-danger\"><a th:href=\"@{/EliminarEmpresa/{id}(id=${empresa.id})}\">Eliminar</a></button></td>\r\n          <td><button type=\"button\" class=\"btn btn-danger\"><a th:href=\"@{/Empresa/{id}/Empleados (id=${empresa.id})}\">Ver</a></button></td>\r\n          <td><button type=\"button\" class=\"btn btn-warning\"><a th:href=\"@{/Empresa/{id}/Movimientos (id=${empresa.id})}\">Ver</a></button></td>\r\n\r\n\r\n    </tr>\r\n</table>\r\n\r\n    <!-- vamos a crear un boton que sirva para agregar nuevas empresas -->\r\n    <button type=\"button\" class=\"btn btn-info\"><a th:href=\"@{/AgregarEmpresa}\">Agregar Nueva Empresa</a></button>\r\n    <br><br>\r\n    <button type=\"button\" class=\"btn btn-primary\"><a th:href=\"@{/VerEmpleados}\">Ver lista de Empleados</a></button>\r\n\r\n</div>\r\n\r\n\r\n\r\n\r\n</body>\r\n</html>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/resources/templates/verEmpresas.html b/src/main/resources/templates/verEmpresas.html
+--- a/src/main/resources/templates/verEmpresas.html	(revision ebea800b3f753eaddd8747688c47ca0e33f7a6ab)
++++ b/src/main/resources/templates/verEmpresas.html	(date 1663787912618)
+@@ -34,7 +34,7 @@
+         <th>Telefono</th>
+         <th>NIT</th>
+         <th>Eliminar</th>
+-        <th>Empleados</th>
++
+         <th>Movimientos</th>
+ 
+ 
+@@ -49,7 +49,7 @@
+         <td th:text="${empresa.telefono}"></td>
+         <td th:text="${empresa.NIT}"></td>
+           <td><button type="button" class="btn btn-danger"><a th:href="@{/EliminarEmpresa/{id}(id=${empresa.id})}">Eliminar</a></button></td>
+-          <td><button type="button" class="btn btn-danger"><a th:href="@{/Empresa/{id}/Empleados (id=${empresa.id})}">Ver</a></button></td>
++
+           <td><button type="button" class="btn btn-warning"><a th:href="@{/Empresa/{id}/Movimientos (id=${empresa.id})}">Ver</a></button></td>
+ 
+ 
+Index: src/main/java/com/grupo1/BSL/controller/FrontController.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.grupo1.BSL.controller;\r\n\r\nimport com.grupo1.BSL.models.Empleado;\r\nimport com.grupo1.BSL.models.Empresa;\r\nimport com.grupo1.BSL.models.MovimientoDinero;\r\nimport com.grupo1.BSL.service.EmpresaService;\r\nimport com.grupo1.BSL.service.MovimientoService;\r\nimport com.grupo1.BSL.service.UsuarioService;\r\nimport org.springframework.data.domain.Page;\r\nimport org.springframework.data.domain.PageRequest;\r\nimport org.springframework.stereotype.Controller;\r\nimport org.springframework.ui.Model;\r\nimport org.springframework.web.bind.annotation.*;\r\nimport org.springframework.web.servlet.mvc.support.RedirectAttributes;\r\n\r\nimport java.util.List;\r\n\r\n@Controller\r\npublic class FrontController {\r\n        private final EmpresaService empresaService;\r\n        private final UsuarioService usuarioService;\r\n        private final MovimientoService movimientoService;\r\n\r\n        public FrontController (EmpresaService empresaService,UsuarioService usuarioService,MovimientoService movimientoService){\r\n            this.empresaService =empresaService;\r\n            this.movimientoService= movimientoService;\r\n            this.usuarioService= usuarioService;\r\n\r\n        }\r\n        @GetMapping ({\"/VerEmpresas\"})\r\n        public String viewEmpresas(Model model, @ModelAttribute(\"mensaje\") String mensaje){\r\n            List<Empresa> listaEmpresas=empresaService.getAll();\r\n            model.addAttribute(\"emplist\",listaEmpresas);\r\n            model.addAttribute(\"mensaje\",mensaje);\r\n            return \"verEmpresas\"; //Llamamos al HTML\r\n        }\r\n\r\n        @GetMapping(\"/AgregarEmpresa\")\r\n        public String nuevaEmpresa(Model model, @ModelAttribute(\"mensaje\") String mensaje){\r\n            Empresa emp= new Empresa();\r\n            model.addAttribute(\"emp\",emp);\r\n            model.addAttribute(\"mensaje\",mensaje);\r\n            return \"agregarEmpresa\";\r\n        }\r\n\r\n        @PostMapping(\"/GuardarEmpresa\")\r\n        public String guardarEmpresa(Empresa emp, RedirectAttributes redirectAttributes){\r\n            empresaService.save(emp);\r\n            return  \"redirect:/VerEmpresas\";\r\n\r\n        }\r\n\r\n\r\n\r\n        @GetMapping (\"/VerEmpleados\")\r\n        public String viewEmpleados(Model model, @ModelAttribute(\"mensaje\") String mensaje){\r\n            List<Empleado> listaEmpleados=  usuarioService.getAll();\r\n            model.addAttribute(\"emplelist\",listaEmpleados);\r\n            model.addAttribute(\"mensaje\",mensaje);\r\n            return \"verEmpleados\"; //Llamamos al HTML\r\n        }\r\n        @GetMapping(\"/AgregarEmpleado\")\r\n        public String nuevoEmpleado(Model model, @ModelAttribute(\"mensaje\") String mensaje){\r\n            Empleado empl= new Empleado();\r\n            model.addAttribute(\"empl\",empl);\r\n            model.addAttribute(\"mensaje\",mensaje);\r\n            List<Empresa> listaEmpresas= empresaService.getAll();\r\n            model.addAttribute(\"emprelist\",listaEmpresas);\r\n            return \"agregarEmpleado\"; //Llamar HTML\r\n        }\r\n        @PostMapping(\"/GuardarEmpleado\")\r\n        public String guardarEmpleado(Empleado empl, RedirectAttributes redirectAttributes) {\r\n            usuarioService.save(empl);\r\n            return \"redirect:/VerEmpleados\";\r\n        }\r\n        @GetMapping(\"/EliminarEmpleado/{id}\")\r\n        public String eliminarEmpleado(@PathVariable Integer id, RedirectAttributes redirectAttributes){\r\n            return \"redirect:/VerEmpleados\";\r\n        }\r\n\r\n\r\n\r\n       /* @GetMapping (\"/VerMovements\")\r\n        public String viewMovements(Model model, @ModelAttribute(\"mensaje\") String mensaje){\r\n            List<MovimientoDinero> Movimiento=  movimientoService.getAllByEnterprise( Empresa);\r\n            model.addAttribute(\"movements\",movimientoService);\r\n            model.addAttribute(\"mensaje\",mensaje);\r\n            return \"verMovements\"; //Llamamos al HTML\r\n        }\r\n        @PostMapping(\"/GuardarMovimiento\")\r\n        public String guardarMovimiento(MovimientoDinero mov, RedirectAttributes redirectAttributes){\r\n            return \"redirect:/AgregarMovimiento\";\r\n        }\r\n\r\n        @PostMapping(\"/ActualizarMovimiento\")\r\n        public String updateMovimiento(@ModelAttribute(\"mov\") MovimientoDinero mov, RedirectAttributes redirectAttributes){\r\n               return \"redirect:/EditarMovimiemto/\"+mov.getId();\r\n\r\n    }\r\n\r\n        @GetMapping(\"/EliminarMovimiento/{id}\")\r\n        public String eliminarMovimiento(@PathVariable Integer id, RedirectAttributes redirectAttributes){\r\n        return \"redirect:/VerMovimientos\";\r\n    }*/\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/com/grupo1/BSL/controller/FrontController.java b/src/main/java/com/grupo1/BSL/controller/FrontController.java
+--- a/src/main/java/com/grupo1/BSL/controller/FrontController.java	(revision ebea800b3f753eaddd8747688c47ca0e33f7a6ab)
++++ b/src/main/java/com/grupo1/BSL/controller/FrontController.java	(date 1663787729326)
+@@ -13,6 +13,7 @@
+ import org.springframework.web.bind.annotation.*;
+ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+ 
++import javax.persistence.Id;
+ import java.util.List;
+ 
+ @Controller
+@@ -80,9 +81,9 @@
+ 
+ 
+ 
+-       /* @GetMapping ("/VerMovements")
++        /*@GetMapping ("/VerMovements")
+         public String viewMovements(Model model, @ModelAttribute("mensaje") String mensaje){
+-            List<MovimientoDinero> Movimiento=  movimientoService.getAllByEnterprise( Empresa);
++            List<MovimientoDinero> Movimiento=  movimientoService.getAllByEnterprise();
+             model.addAttribute("movements",movimientoService);
+             model.addAttribute("mensaje",mensaje);
+             return "verMovements"; //Llamamos al HTML
+Index: src/main/java/com/grupo1/BSL/service/MovimientoService.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.grupo1.BSL.service;\r\n\r\nimport com.grupo1.BSL.models.MovimientoDinero;\r\nimport com.grupo1.BSL.repository.MovimientoRepository;\r\nimport org.springframework.beans.factory.annotation.Autowired;\r\nimport org.springframework.stereotype.Service;\r\n\r\nimport java.util.List;\r\n\r\n@Service\r\npublic class MovimientoService {\r\n\r\n    @Autowired\r\n    private MovimientoRepository movimientoRepository;\r\n\r\n    public List<MovimientoDinero> getAllByEnterprise(int idEmpresa){\r\n        return (List<MovimientoDinero>) movimientoRepository.findByEmpresa(idEmpresa);\r\n    }\r\n\r\n    public MovimientoDinero saveByEnterprise(MovimientoDinero movimientoDinero, int idEnterprise){\r\n        return movimientoRepository.save(movimientoDinero);\r\n    }\r\n\r\n    public MovimientoDinero updateByEnterprise(MovimientoDinero movimientoMod, int idEnterprise){\r\n        return  movimientoRepository.save(movimientoMod);\r\n    }\r\n\r\n    public boolean deleteByIdAndEnterprise(int id, int idEnterprise){\r\n        if(movimientoRepository.findByIdAndEmpresa(id, idEnterprise).isPresent()){\r\n            movimientoRepository.deleteById(id);\r\n\r\n            if(movimientoRepository.findById(id).isPresent()){\r\n                return false;\r\n            }\r\n            return true;\r\n        }\r\n        return false;\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/com/grupo1/BSL/service/MovimientoService.java b/src/main/java/com/grupo1/BSL/service/MovimientoService.java
+--- a/src/main/java/com/grupo1/BSL/service/MovimientoService.java	(revision ebea800b3f753eaddd8747688c47ca0e33f7a6ab)
++++ b/src/main/java/com/grupo1/BSL/service/MovimientoService.java	(date 1663787729339)
+@@ -1,5 +1,6 @@
+ package com.grupo1.BSL.service;
+ 
++import com.grupo1.BSL.models.Empresa;
+ import com.grupo1.BSL.models.MovimientoDinero;
+ import com.grupo1.BSL.repository.MovimientoRepository;
+ import org.springframework.beans.factory.annotation.Autowired;
+@@ -13,8 +14,8 @@
+     @Autowired
+     private MovimientoRepository movimientoRepository;
+ 
+-    public List<MovimientoDinero> getAllByEnterprise(int idEmpresa){
+-        return (List<MovimientoDinero>) movimientoRepository.findByEmpresa(idEmpresa);
++    public List<MovimientoDinero> getAllByEnterprise(int IdEmpresa){
++        return (List<MovimientoDinero>) movimientoRepository.findAll();
+     }
+ 
+     public MovimientoDinero saveByEnterprise(MovimientoDinero movimientoDinero, int idEnterprise){
+@@ -37,3 +38,6 @@
+         return false;
+     }
+ }
++    //public List<Empresa> getAll(){
++       // return (List<Empresa>) empresaRespository.findAll();
++    //}
+\ No newline at end of file
+Index: .idea/workspace.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"AutoImportSettings\">\r\n    <option name=\"autoReloadType\" value=\"SELECTIVE\" />\r\n  </component>\r\n  <component name=\"ChangeListManager\">\r\n    <list default=\"true\" id=\"dcdcd2fd-ac72-4143-92e3-739b3c7a5c93\" name=\"Changes\" comment=\"ultimo intento queda actualizado y conectado con el supabase\">\r\n      <change afterPath=\"$PROJECT_DIR$/src/main/java/com/grupo1/BSL/controller/FrontController.java\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/src/main/resources/templates/agregarEmpleado.html\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/src/main/resources/templates/agregarEmpresa.html\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/src/main/resources/templates/agregarMovimientos.html\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/src/main/resources/templates/verEmpleados.html\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/src/main/resources/templates/verEmpresas.html\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/src/main/resources/templates/verMovimientos.html\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/workspace.xml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.idea/workspace.xml\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/pom.xml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/pom.xml\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/main/java/com/grupo1/BSL/BslApplication.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/main/java/com/grupo1/BSL/BslApplication.java\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/main/java/com/grupo1/BSL/controller/EmpresaController.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/main/java/com/grupo1/BSL/controller/EmpresaController.java\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/main/java/com/grupo1/BSL/controller/MovimientoController.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/main/java/com/grupo1/BSL/controller/MovimientoController.java\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/main/java/com/grupo1/BSL/controller/UsuarioController.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/main/java/com/grupo1/BSL/controller/UsuarioController.java\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/target/classes/com/grupo1/BSL/BslApplication.class\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/target/classes/com/grupo1/BSL/BslApplication.class\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/target/classes/com/grupo1/BSL/controller/EmpresaController.class\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/target/classes/com/grupo1/BSL/controller/EmpresaController.class\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/target/classes/com/grupo1/BSL/controller/MovimientoController.class\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/target/classes/com/grupo1/BSL/controller/MovimientoController.class\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/target/classes/com/grupo1/BSL/controller/UsuarioController.class\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/target/classes/com/grupo1/BSL/controller/UsuarioController.class\" afterDir=\"false\" />\r\n    </list>\r\n    <option name=\"SHOW_DIALOG\" value=\"false\" />\r\n    <option name=\"HIGHLIGHT_CONFLICTS\" value=\"true\" />\r\n    <option name=\"HIGHLIGHT_NON_ACTIVE_CHANGELIST\" value=\"false\" />\r\n    <option name=\"LAST_RESOLUTION\" value=\"IGNORE\" />\r\n  </component>\r\n  <component name=\"FileTemplateManagerImpl\">\r\n    <option name=\"RECENT_TEMPLATES\">\r\n      <list>\r\n        <option value=\"Class\" />\r\n        <option value=\"HTML File\" />\r\n      </list>\r\n    </option>\r\n  </component>\r\n  <component name=\"Git.Settings\">\r\n    <option name=\"RECENT_GIT_ROOT_PATH\" value=\"$PROJECT_DIR$\" />\r\n  </component>\r\n  <component name=\"MarkdownSettingsMigration\">\r\n    <option name=\"stateVersion\" value=\"1\" />\r\n  </component>\r\n  <component name=\"MavenImportPreferences\">\r\n    <option name=\"generalSettings\">\r\n      <MavenGeneralSettings>\r\n        <option name=\"useMavenConfig\" value=\"true\" />\r\n      </MavenGeneralSettings>\r\n    </option>\r\n  </component>\r\n  <component name=\"ProjectId\" id=\"2EYTAJN8rRe0oXt2crpTYLr0y9A\" />\r\n  <component name=\"ProjectViewState\">\r\n    <option name=\"hideEmptyMiddlePackages\" value=\"true\" />\r\n    <option name=\"showLibraryContents\" value=\"true\" />\r\n  </component>\r\n  <component name=\"PropertiesComponent\"><![CDATA[{\r\n  \"keyToString\": {\r\n    \"DefaultHtmlFileTemplate\": \"HTML File\",\r\n    \"RunOnceActivity.OpenProjectViewOnStart\": \"true\",\r\n    \"RunOnceActivity.ShowReadmeOnStart\": \"true\",\r\n    \"last_opened_file_path\": \"C:/repositorioNataly/proyectoCopia\"\r\n  }\r\n}]]></component>\r\n  <component name=\"SpellCheckerSettings\" RuntimeDictionaries=\"0\" Folders=\"0\" CustomDictionaries=\"0\" DefaultDictionary=\"application-level\" UseSingleDictionary=\"true\" transferred=\"true\" />\r\n  <component name=\"TaskManager\">\r\n    <task active=\"true\" id=\"Default\" summary=\"Default task\">\r\n      <changelist id=\"dcdcd2fd-ac72-4143-92e3-739b3c7a5c93\" name=\"Changes\" comment=\"\" />\r\n      <created>1662771381115</created>\r\n      <option name=\"number\" value=\"Default\" />\r\n      <option name=\"presentableId\" value=\"Default\" />\r\n      <updated>1662771381115</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00001\" summary=\" Archivo actualizado para ver en la en la nube SupaBase.\">\r\n      <created>1663287806819</created>\r\n      <option name=\"number\" value=\"00001\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00001\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1663287806819</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00002\" summary=\"ultimo intento queda actualizado y conectado con el supabase\">\r\n      <created>1663297723073</created>\r\n      <option name=\"number\" value=\"00002\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00002\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1663297723073</updated>\r\n    </task>\r\n    <option name=\"localTasksCounter\" value=\"3\" />\r\n    <servers />\r\n  </component>\r\n  <component name=\"Vcs.Log.Tabs.Properties\">\r\n    <option name=\"TAB_STATES\">\r\n      <map>\r\n        <entry key=\"MAIN\">\r\n          <value>\r\n            <State />\r\n          </value>\r\n        </entry>\r\n      </map>\r\n    </option>\r\n  </component>\r\n  <component name=\"VcsManagerConfiguration\">\r\n    <MESSAGE value=\" Archivo actualizado para ver en la en la nube SupaBase.\" />\r\n    <MESSAGE value=\"ultimo intento queda actualizado y conectado con el supabase\" />\r\n    <option name=\"LAST_COMMIT_MESSAGE\" value=\"ultimo intento queda actualizado y conectado con el supabase\" />\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/workspace.xml b/.idea/workspace.xml
+--- a/.idea/workspace.xml	(revision ebea800b3f753eaddd8747688c47ca0e33f7a6ab)
++++ b/.idea/workspace.xml	(date 1663866016496)
+@@ -4,24 +4,12 @@
+     <option name="autoReloadType" value="SELECTIVE" />
+   </component>
+   <component name="ChangeListManager">
+-    <list default="true" id="dcdcd2fd-ac72-4143-92e3-739b3c7a5c93" name="Changes" comment="ultimo intento queda actualizado y conectado con el supabase">
+-      <change afterPath="$PROJECT_DIR$/src/main/java/com/grupo1/BSL/controller/FrontController.java" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/src/main/resources/templates/agregarEmpleado.html" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/src/main/resources/templates/agregarEmpresa.html" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/src/main/resources/templates/agregarMovimientos.html" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/src/main/resources/templates/verEmpleados.html" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/src/main/resources/templates/verEmpresas.html" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/src/main/resources/templates/verMovimientos.html" afterDir="false" />
++    <list default="true" id="dcdcd2fd-ac72-4143-92e3-739b3c7a5c93" name="Changes" comment="subo comienzo de interfaz pendiente movimientos y otros temas">
+       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/main/java/com/grupo1/BSL/BslApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/grupo1/BSL/BslApplication.java" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/main/java/com/grupo1/BSL/controller/EmpresaController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/grupo1/BSL/controller/EmpresaController.java" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/main/java/com/grupo1/BSL/controller/MovimientoController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/grupo1/BSL/controller/MovimientoController.java" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/main/java/com/grupo1/BSL/controller/UsuarioController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/grupo1/BSL/controller/UsuarioController.java" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/target/classes/com/grupo1/BSL/BslApplication.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/grupo1/BSL/BslApplication.class" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/target/classes/com/grupo1/BSL/controller/EmpresaController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/grupo1/BSL/controller/EmpresaController.class" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/target/classes/com/grupo1/BSL/controller/MovimientoController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/grupo1/BSL/controller/MovimientoController.class" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/target/classes/com/grupo1/BSL/controller/UsuarioController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/grupo1/BSL/controller/UsuarioController.class" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/main/java/com/grupo1/BSL/controller/FrontController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/grupo1/BSL/controller/FrontController.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/main/java/com/grupo1/BSL/service/MovimientoService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/grupo1/BSL/service/MovimientoService.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/verEmpresas.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/verEmpresas.html" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/target/classes/com/grupo1/BSL/service/MovimientoService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/grupo1/BSL/service/MovimientoService.class" afterDir="false" />
+     </list>
+     <option name="SHOW_DIALOG" value="false" />
+     <option name="HIGHLIGHT_CONFLICTS" value="true" />
+@@ -59,7 +47,7 @@
+     "DefaultHtmlFileTemplate": "HTML File",
+     "RunOnceActivity.OpenProjectViewOnStart": "true",
+     "RunOnceActivity.ShowReadmeOnStart": "true",
+-    "last_opened_file_path": "C:/repositorioNataly/proyectoCopia"
++    "last_opened_file_path": "C:/proyectos/BSL"
+   }
+ }]]></component>
+   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+@@ -85,7 +73,14 @@
+       <option name="project" value="LOCAL" />
+       <updated>1663297723073</updated>
+     </task>
+-    <option name="localTasksCounter" value="3" />
++    <task id="LOCAL-00003" summary="subo comienzo de interfaz pendiente movimientos y otros temas">
++      <created>1663724437939</created>
++      <option name="number" value="00003" />
++      <option name="presentableId" value="LOCAL-00003" />
++      <option name="project" value="LOCAL" />
++      <updated>1663724437939</updated>
++    </task>
++    <option name="localTasksCounter" value="4" />
+     <servers />
+   </component>
+   <component name="Vcs.Log.Tabs.Properties">
+@@ -102,6 +97,7 @@
+   <component name="VcsManagerConfiguration">
+     <MESSAGE value=" Archivo actualizado para ver en la en la nube SupaBase." />
+     <MESSAGE value="ultimo intento queda actualizado y conectado con el supabase" />
+-    <option name="LAST_COMMIT_MESSAGE" value="ultimo intento queda actualizado y conectado con el supabase" />
++    <MESSAGE value="subo comienzo de interfaz pendiente movimientos y otros temas" />
++    <option name="LAST_COMMIT_MESSAGE" value="subo comienzo de interfaz pendiente movimientos y otros temas" />
+   </component>
+ </project>
+\ No newline at end of file

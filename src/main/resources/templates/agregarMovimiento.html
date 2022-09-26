@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Agregar nuevo Movimiento</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  <style>
+          a{
+              color:white;
+          }
+          a:hover{
+              color: black;
+              text-decoration: none;
+          }
+    </style>
+</head>
+<body>
+<div class="container">
+  <h1>Agregue aqui los datos del Movimiento</h1>
+  <br>
+  <form th:action="@{/GuardarMovimiento}" th:object="${movimiento}" method="post">
+    <div class="row">
+      <div class="form-group col-md-12">
+        <label class ="col-md-3" for="concepto">Concepto del Movimiento:</label>
+        <div class="col-md-6">
+          <select th:field="*{concepto}" class="form-control" id="concepto" required="required">
+            <option th:value=1>Papeleria</option>
+            <option th:value=2>Servicios Publicos/Privados</option>
+            <option th:value=3>Operativos</option>
+            <option th:value=4>Caja menor</option>
+            <option th:value=5>Tributario</option>
+            <option th:value=6>Mobiliario</option>
+            <option th:value=7>Maquinaria y Equipo</option>
+            <option th:value=8>Nomina</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="form-group col-md-12">
+        <label class ="col-md-3" for="monto">Monto del Movimiento:</label>
+        <div class="col-md-6">
+          <input type="number" th:field="*{monto}" class="form-control" id="monto" required="required">
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="form-group col-md-12">
+        <label class ="col-md-3" for="usuario">Empleado que genera el Movimiento:</label>
+        <div class="col-md-6">
+          <select th:field="*{usuario}" class="form-control" id="usuario" required="required">
+            <option th:each="empleado: ${listEmpleados}" th:text="${empleado.nombre}" th:value="${empleado.id}"></option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-2">
+        <button class="btn btn-success" >Crear Movimiento</button>
+      </div>
+    </div>
+
+  </form>
+  <br>
+  <a href="javascript: history.go(-1)" class="btn btn-info" role="button">Atrás</a>
+</div>
+</body>
+</html>

@@ -1,0 +1,209 @@
+Index: src/main/java/com/grupo1/BSL/service/UsuarioService.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.grupo1.BSL.service;\r\n\r\nimport com.grupo1.BSL.models.Empleado;\r\nimport com.grupo1.BSL.repository.UsuarioRepository;\r\nimport org.springframework.beans.factory.annotation.Autowired;\r\nimport org.springframework.stereotype.Service;\r\n\r\nimport java.util.ArrayList;\r\nimport java.util.List;\r\nimport java.util.Optional;\r\n\r\n@Service\r\npublic class UsuarioService {\r\n\r\n    @Autowired\r\n    private UsuarioRepository usuarioRepository;\r\n\r\n    public List<Empleado> getAll(){\r\n        return (List<Empleado>) usuarioRepository.findAll();\r\n    }\r\n\r\n    public Empleado getById(int id){\r\n        return usuarioRepository.findById(id).get();\r\n    }\r\n\r\n    public Empleado save(Empleado empleado){\r\n        return usuarioRepository.save(empleado);\r\n    }\r\n\r\n    public boolean delete(int id){\r\n        usuarioRepository.deleteById(id);\r\n\r\n        if (usuarioRepository.findById(id).isPresent()){\r\n            return false;\r\n        }\r\n        return true;\r\n    }\r\n\r\n    public Empleado update(Empleado empleado){\r\n        return usuarioRepository.save(empleado);\r\n    }\r\n\r\n    public ArrayList<Empleado> getByEmpresa(Integer id){\r\n        return usuarioRepository.findByEmpresa(id);\r\n    }\r\n\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/com/grupo1/BSL/service/UsuarioService.java b/src/main/java/com/grupo1/BSL/service/UsuarioService.java
+--- a/src/main/java/com/grupo1/BSL/service/UsuarioService.java	(revision 11b04d01b2ba10b1fef3cec4394ed209e25faca9)
++++ b/src/main/java/com/grupo1/BSL/service/UsuarioService.java	(date 1664141573972)
+@@ -44,4 +44,8 @@
+         return usuarioRepository.findByEmpresa(id);
+     }
+ 
++    public List<Empleado> obtenerPorEmpresa(Integer id) {
++        return usuarioRepository.findByEmpresa(id);
++    }
+ }
++
+Index: src/main/resources/templates/verEmpresas.html
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><!DOCTYPE html>\r\n<html lang=\"en\" xmlns:th=\"http://www.thymeleaf.org\">\r\n\r\n<head>\r\n    <title>Lista de Empresas </title>\r\n    <meta charset=\"utf-8\">\r\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\r\n    <link rel=\"stylesheet\" href=\"https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css\">\r\n    <link rel=\"stylesheet\" href=\"https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css\">\r\n    <script src=\"https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js\"></script>\r\n    <script src=\"https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js\"></script>\r\n    <script src=\"https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js\"></script>\r\n    <style>\r\n    a{\r\n    color:white;\r\n    }\r\n    a:hover {\r\n    color: black;\r\n    text-decoration:none;\r\n    }\r\n</style>\r\n</head>\r\n<body>\r\n<div class=\"container\">\r\n    <button type=\"button\" class=\"btn btn-danger\" style=\"float:right\"><a th:href=\"@{/logout}\">Cerrar Sesión</a></button>\r\n\r\n    <h1> Lista de Empresas</h1>\r\n    <!--Dibujamos la tabla-->\r\n\r\n    <table class=\" table table-bordered border-primary table-hover table-success \">\r\n    <tr>\r\n        <th>ID</th>\r\n        <th>Nombre</th>\r\n        <th>Dirección</th>\r\n        <th>Telefono</th>\r\n        <th>NIT</th>\r\n        <th>Eliminar</th>\r\n        <th>Empleados</th>\r\n        <th>Movimientos</th>\r\n\r\n\r\n\r\n\r\n    </tr>\r\n\r\n      <tr th:each=\"empresa : ${emplist}\">\r\n        <td th:text=\"${empresa.id}\"></td>\r\n        <td th:text=\"${empresa.nombre}\"></td>\r\n        <td th:text=\"${empresa.direccion}\"></td>\r\n        <td th:text=\"${empresa.telefono}\"></td>\r\n        <td th:text=\"${empresa.NIT}\"></td>\r\n          <td><button type=\"button\" class=\"btn btn-danger\"><a th:href=\"@{/EliminarEmpresa/{id}(id=${empresa.id})}\">Eliminar</a></button></td>\r\n          <td><button type=\"button\" class=\"btn btn-danger\"><a th:href=\"@{/Empresa/{id}/Empleados (id=${empresa.id})}\">Ver</a></button></td>\r\n          <td><button type=\"button\" class=\"btn btn-warning\"><a th:href=\"@{/VerMovimientos/{idEmpresa} (idEmpresa=${empresa.id})}\">Ver</a></button></td>\r\n\r\n\r\n    </tr>\r\n</table>\r\n\r\n    <!-- vamos a crear un boton que sirva para agregar nuevas empresas -->\r\n    <button type=\"button\" class=\"btn btn-info\"><a th:href=\"@{/AgregarEmpresa}\">Agregar Nueva Empresa</a></button>\r\n    <br><br>\r\n    <button type=\"button\" class=\"btn btn-primary\"><a th:href=\"@{/VerEmpleados}\">Ver lista de Empleados</a></button>\r\n\r\n</div>\r\n\r\n\r\n\r\n\r\n</body>\r\n</html>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/resources/templates/verEmpresas.html b/src/main/resources/templates/verEmpresas.html
+--- a/src/main/resources/templates/verEmpresas.html	(revision 11b04d01b2ba10b1fef3cec4394ed209e25faca9)
++++ b/src/main/resources/templates/verEmpresas.html	(date 1664141083557)
+@@ -50,7 +50,7 @@
+         <td th:text="${empresa.telefono}"></td>
+         <td th:text="${empresa.NIT}"></td>
+           <td><button type="button" class="btn btn-danger"><a th:href="@{/EliminarEmpresa/{id}(id=${empresa.id})}">Eliminar</a></button></td>
+-          <td><button type="button" class="btn btn-danger"><a th:href="@{/Empresa/{id}/Empleados (id=${empresa.id})}">Ver</a></button></td>
++          <td><button type="button" class="btn btn-danger"><a th:href="@{/Empresa/{id}/Empleados(id=${empresa.id})}">Ver</a></button></td>
+           <td><button type="button" class="btn btn-warning"><a th:href="@{/VerMovimientos/{idEmpresa} (idEmpresa=${empresa.id})}">Ver</a></button></td>
+ 
+ 
+Index: src/main/java/com/grupo1/BSL/controller/FrontController.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.grupo1.BSL.controller;\r\n\r\nimport com.grupo1.BSL.models.Empleado;\r\nimport com.grupo1.BSL.models.Empresa;\r\nimport com.grupo1.BSL.models.MovimientoDinero;\r\nimport com.grupo1.BSL.service.EmpresaService;\r\nimport com.grupo1.BSL.service.MovimientoService;\r\nimport com.grupo1.BSL.service.UsuarioService;\r\nimport org.springframework.context.annotation.Bean;\r\n\r\nimport org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;\r\nimport org.springframework.security.crypto.password.PasswordEncoder;\r\n\r\nimport org.springframework.stereotype.Controller;\r\nimport org.springframework.ui.Model;\r\nimport org.springframework.web.bind.annotation.*;\r\nimport org.springframework.web.servlet.mvc.support.RedirectAttributes;\r\n\r\nimport java.util.List;\r\n\r\n@Controller\r\npublic class FrontController {\r\n        private final EmpresaService empresaService;\r\n        private final UsuarioService usuarioService;\r\n        private final MovimientoService movimientoService;\r\n\r\n        public FrontController (EmpresaService empresaService,UsuarioService usuarioService,MovimientoService movimientoService){\r\n            this.empresaService =empresaService;\r\n            this.movimientoService= movimientoService;\r\n            this.usuarioService= usuarioService;\r\n\r\n        }\r\n\r\n\r\n    @GetMapping({\"/\",\"/VerEmpresas\"})\r\n        public String viewEmpresas(Model model, @ModelAttribute(\"mensaje\") String mensaje){\r\n            List<Empresa> listaEmpresas=empresaService.getAll();\r\n            model.addAttribute(\"emplist\",listaEmpresas);\r\n            model.addAttribute(\"mensaje\",mensaje);\r\n            return \"verEmpresas\"; //Llamamos al HTML\r\n        }\r\n\r\n        @GetMapping(\"/AgregarEmpresa\")\r\n        public String nuevaEmpresa(Model model, @ModelAttribute(\"mensaje\") String mensaje){\r\n            Empresa emp= new Empresa();\r\n            model.addAttribute(\"emp\",emp);\r\n            model.addAttribute(\"mensaje\",mensaje);\r\n            return \"agregarEmpresa\";\r\n        }\r\n\r\n        @PostMapping(\"/GuardarEmpresa\")\r\n        public String guardarEmpresa(Empresa emp, RedirectAttributes redirectAttributes){\r\n            empresaService.save(emp);\r\n            return  \"redirect:/VerEmpresas\";\r\n\r\n        }\r\n\r\n\r\n\r\n        @GetMapping (\"/VerEmpleados\")\r\n        public String viewEmpleados(Model model, @ModelAttribute(\"mensaje\") String mensaje){\r\n            List<Empleado> listaEmpleados=  usuarioService.getAll();\r\n            model.addAttribute(\"emplelist\",listaEmpleados);\r\n            model.addAttribute(\"mensaje\",mensaje);\r\n            return \"verEmpleados\"; //Llamamos al HTML\r\n        }\r\n        @GetMapping(\"/AgregarEmpleado\")\r\n        public String nuevoEmpleado(Model model, @ModelAttribute(\"mensaje\") String mensaje){\r\n            Empleado empl= new Empleado();\r\n            model.addAttribute(\"empl\",empl);\r\n            model.addAttribute(\"mensaje\",mensaje);\r\n            List<Empresa> listaEmpresas= empresaService.getAll();\r\n            model.addAttribute(\"emprelist\",listaEmpresas);\r\n            return \"agregarEmpleado\"; //Llamar HTML\r\n        }\r\n        /*@PostMapping(\"/GuardarEmpleado\")\r\n        public String guardarEmpleado(Empleado empl, RedirectAttributes redirectAttributes) {\r\n            usuarioService.save(empl);\r\n            return \"redirect:/VerEmpleados\";\r\n        }*/\r\n\r\n        @PostMapping(\"/GuardarEmpleado\")\r\n        public String guardarEmpleado(Empleado empl, RedirectAttributes redirectAttributes) {\r\n            String passEncriptada=passwordEncoder().encode(empl.getPassword());\r\n            empl.setPassword(passEncriptada);\r\n            usuarioService.save(empl);\r\n            return \"redirect:/AgregarEmpleado\";\r\n        }\r\n\r\n\r\n        @GetMapping(\"/EliminarEmpleado/{id}\")\r\n        public String eliminarEmpleado(@PathVariable Integer id, RedirectAttributes redirectAttributes){\r\n            return \"redirect:/VerEmpleados\";\r\n        }\r\n\r\n           @GetMapping (\"/VerMovimientos/{idEmpresa}\")\r\n        public String viewMovements(Model model, @ModelAttribute(\"mensaje\") String mensaje,@PathVariable(\"idEmpresa\") int idEmpresa){\r\n            List<MovimientoDinero> listMovimientos = movimientoService.getAllByEnterprise(idEmpresa);\r\n            model.addAttribute(\"movlist\",listMovimientos);\r\n            model.addAttribute(\"mensaje\",mensaje);\r\n           model.addAttribute(\"idEmpresa\",idEmpresa);\r\n            return \"verMovimientos\"; //Llamamos al HTML\r\n        }\r\n\r\n        @GetMapping(\"/AgregarMovimiento/{idEmpresa}\")\r\n        public String addMovimiento(Model model, @ModelAttribute(\"mensaje\") String mensaje, @PathVariable(\"idEmpresa\") int idEmpresa){\r\n            MovimientoDinero movimiento = new MovimientoDinero();\r\n            List<Empleado> listEmpleado =  usuarioService.getByEmpresa(idEmpresa);\r\n\r\n            model.addAttribute(\"movimiento\", movimiento);\r\n            model.addAttribute(\"listEmpleados\", listEmpleado);\r\n            model.addAttribute(\"mensaje\", mensaje);\r\n            return \"agregarMovimiento\";\r\n        }\r\n\r\n        @PostMapping(\"/GuardarMovimiento\")\r\n        public String saveMovimiento(MovimientoDinero movimiento, RedirectAttributes redirectAttributes){\r\n\r\n            MovimientoDinero movimientoSaved = movimientoService.saveByEnterprise(movimiento, 1);\r\n\r\n            if(movimientoSaved != null)\r\n            {\r\n                redirectAttributes.addFlashAttribute(\"mensaje\",\"saveOK\");\r\n                return \"redirect:/VerMovimientos/\" + movimientoSaved.getUsuario().getEmpresa().getId();\r\n            }\r\n            redirectAttributes.addFlashAttribute(\"mensaje\", \"saveError\");\r\n            return \"redirect:/VerMovimientos/\" + movimiento.getUsuario().getEmpresa().getId();\r\n        }\r\n\r\n        @PostMapping(\"/ActualizarMovimiento\")\r\n        public String updateMovimiento(@ModelAttribute(\"mov\") MovimientoDinero mov, RedirectAttributes redirectAttributes){\r\n            return \"redirect:/EditarMovimiemto/\"+mov.getId();\r\n        }\r\n\r\n        @GetMapping(\"/EliminarMovimiento/{id}\")\r\n        public String eliminarMovimiento(@PathVariable(\"id\") int id, RedirectAttributes redirectAttributes){\r\n\r\n            int empresa = movimientoService.getById(id).getUsuario().getEmpresa().getId();\r\n\r\n            if(movimientoService.delete(id)){\r\n                redirectAttributes.addFlashAttribute(\"mensaje\", \"deleteOK\");\r\n                return \"redirect:/VerMovimientos/\"+empresa;\r\n            }\r\n            redirectAttributes.addFlashAttribute(\"mensaje\", \"deleteError\");\r\n            return \"redirect:/VerMovimientos/\"+empresa;\r\n        }\r\n\r\n    //Metodo para encriptar contraseñas\r\n    @Bean\r\n    public PasswordEncoder passwordEncoder(){\r\n        return new BCryptPasswordEncoder();\r\n    }\r\n\r\n\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/com/grupo1/BSL/controller/FrontController.java b/src/main/java/com/grupo1/BSL/controller/FrontController.java
+--- a/src/main/java/com/grupo1/BSL/controller/FrontController.java	(revision 11b04d01b2ba10b1fef3cec4394ed209e25faca9)
++++ b/src/main/java/com/grupo1/BSL/controller/FrontController.java	(date 1664141841206)
+@@ -57,6 +57,7 @@
+ 
+ 
+ 
++
+         @GetMapping ("/VerEmpleados")
+         public String viewEmpleados(Model model, @ModelAttribute("mensaje") String mensaje){
+             List<Empleado> listaEmpleados=  usuarioService.getAll();
+@@ -81,8 +82,8 @@
+ 
+         @PostMapping("/GuardarEmpleado")
+         public String guardarEmpleado(Empleado empl, RedirectAttributes redirectAttributes) {
+-            String passEncriptada=passwordEncoder().encode(empl.getPassword());
+-            empl.setPassword(passEncriptada);
++            /*String passEncriptada=passwordEncoder().encode(empl.getPassword());
++            empl.setPassword(passEncriptada);*/
+             usuarioService.save(empl);
+             return "redirect:/AgregarEmpleado";
+         }
+@@ -92,8 +93,15 @@
+         public String eliminarEmpleado(@PathVariable Integer id, RedirectAttributes redirectAttributes){
+             return "redirect:/VerEmpleados";
+         }
++        @GetMapping ("/Empresa/{id}/Empleados")
++        public String verEmpleadoPorEmpresa(@PathVariable("id")Integer id,Model model){
++            List<Empleado>listaEmpleado =usuarioService.obtenerPorEmpresa(id);
++            model.addAttribute("emplelist",listaEmpleado);
++            return "verEmpleados";
++        }
++
+ 
+-           @GetMapping ("/VerMovimientos/{idEmpresa}")
++        @GetMapping ("/VerMovimientos/{idEmpresa}")
+         public String viewMovements(Model model, @ModelAttribute("mensaje") String mensaje,@PathVariable("idEmpresa") int idEmpresa){
+             List<MovimientoDinero> listMovimientos = movimientoService.getAllByEnterprise(idEmpresa);
+             model.addAttribute("movlist",listMovimientos);
+@@ -146,10 +154,10 @@
+         }
+ 
+     //Metodo para encriptar contraseñas
+-    @Bean
++    /*@Bean
+     public PasswordEncoder passwordEncoder(){
+-        return new BCryptPasswordEncoder();
+-    }
++            return new BCryptPasswordEncoder();
++    }*/
+ 
+ 
+ }
+Index: src/main/java/com/grupo1/BSL/service/EmpresaService.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.grupo1.BSL.service;\r\n\r\nimport com.grupo1.BSL.models.Empresa;\r\nimport com.grupo1.BSL.repository.EmpresaRespository;\r\nimport org.springframework.beans.factory.annotation.Autowired;\r\nimport org.springframework.stereotype.Service;\r\n\r\nimport java.util.ArrayList;\r\nimport java.util.List;\r\n\r\n@Service\r\npublic class EmpresaService {\r\n    @Autowired\r\n    private EmpresaRespository empresaRespository;\r\n\r\n    public List<Empresa> getAll(){\r\n        return (List<Empresa>) empresaRespository.findAll();\r\n    }\r\n\r\n    public Empresa getById(int id){\r\n        return empresaRespository.findById(id).get();\r\n    }\r\n\r\n    public Empresa save(Empresa empresa){\r\n        return empresaRespository.save(empresa);\r\n    }\r\n\r\n    public Empresa update(Empresa empresa){\r\n        return empresaRespository.save(empresa);\r\n    }\r\n\r\n    public boolean delete(int id){\r\n        empresaRespository.deleteById(id);\r\n\r\n        if(empresaRespository.findById(id).isPresent()){\r\n            return false;\r\n        }\r\n        return true;\r\n    }\r\n\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/com/grupo1/BSL/service/EmpresaService.java b/src/main/java/com/grupo1/BSL/service/EmpresaService.java
+--- a/src/main/java/com/grupo1/BSL/service/EmpresaService.java	(revision 11b04d01b2ba10b1fef3cec4394ed209e25faca9)
++++ b/src/main/java/com/grupo1/BSL/service/EmpresaService.java	(date 1664141611791)
+@@ -1,5 +1,6 @@
+ package com.grupo1.BSL.service;
+ 
++import com.grupo1.BSL.models.Empleado;
+ import com.grupo1.BSL.models.Empresa;
+ import com.grupo1.BSL.repository.EmpresaRespository;
+ import org.springframework.beans.factory.annotation.Autowired;
+@@ -13,6 +14,8 @@
+     @Autowired
+     private EmpresaRespository empresaRespository;
+ 
++
++
+     public List<Empresa> getAll(){
+         return (List<Empresa>) empresaRespository.findAll();
+     }
+Index: .idea/workspace.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"AutoImportSettings\">\r\n    <option name=\"autoReloadType\" value=\"SELECTIVE\" />\r\n  </component>\r\n  <component name=\"ChangeListManager\">\r\n    <list default=\"true\" id=\"a247edb4-acfc-4b52-8972-9f60fa09c594\" name=\"Changes\" comment=\"\">\r\n      <change afterPath=\"$PROJECT_DIR$/src/main/java/com/grupo1/BSL/security/SecurityConfig.java\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/target/classes/com/grupo1/BSL/security/SecurityConfig.class\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/workspace.xml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.idea/workspace.xml\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/pom.xml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/pom.xml\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/main/java/com/grupo1/BSL/BslApplication.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/main/java/com/grupo1/BSL/BslApplication.java\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/main/java/com/grupo1/BSL/controller/FrontController.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/main/java/com/grupo1/BSL/controller/FrontController.java\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/main/java/com/grupo1/BSL/controller/UsuarioController.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/main/java/com/grupo1/BSL/controller/UsuarioController.java\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/main/java/com/grupo1/BSL/models/Empleado.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/main/java/com/grupo1/BSL/models/Empleado.java\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/main/java/com/grupo1/BSL/service/EmpresaService.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/main/java/com/grupo1/BSL/service/EmpresaService.java\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/main/java/com/grupo1/BSL/service/UsuarioService.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/main/java/com/grupo1/BSL/service/UsuarioService.java\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/main/resources/templates/agregarEmpleado.html\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/main/resources/templates/agregarEmpleado.html\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/main/resources/templates/verEmpleados.html\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/main/resources/templates/verEmpleados.html\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/main/resources/templates/verEmpresas.html\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/main/resources/templates/verEmpresas.html\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/system.properties\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/system.properties\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/target/classes/com/grupo1/BSL/BslApplication.class\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/target/classes/com/grupo1/BSL/BslApplication.class\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/target/classes/com/grupo1/BSL/controller/FrontController.class\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/target/classes/com/grupo1/BSL/controller/FrontController.class\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/target/classes/com/grupo1/BSL/controller/UsuarioController.class\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/target/classes/com/grupo1/BSL/controller/UsuarioController.class\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/target/classes/com/grupo1/BSL/models/Empleado.class\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/target/classes/com/grupo1/BSL/models/Empleado.class\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/target/classes/com/grupo1/BSL/service/EmpresaService.class\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/target/classes/com/grupo1/BSL/service/EmpresaService.class\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/target/classes/com/grupo1/BSL/service/UsuarioService.class\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/target/classes/com/grupo1/BSL/service/UsuarioService.class\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/target/classes/templates/agregarEmpleado.html\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/target/classes/templates/agregarEmpleado.html\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/target/classes/templates/verEmpleados.html\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/target/classes/templates/verEmpleados.html\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/target/classes/templates/verEmpresas.html\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/target/classes/templates/verEmpresas.html\" afterDir=\"false\" />\r\n    </list>\r\n    <option name=\"SHOW_DIALOG\" value=\"false\" />\r\n    <option name=\"HIGHLIGHT_CONFLICTS\" value=\"true\" />\r\n    <option name=\"HIGHLIGHT_NON_ACTIVE_CHANGELIST\" value=\"false\" />\r\n    <option name=\"LAST_RESOLUTION\" value=\"IGNORE\" />\r\n  </component>\r\n  <component name=\"FileTemplateManagerImpl\">\r\n    <option name=\"RECENT_TEMPLATES\">\r\n      <list>\r\n        <option value=\"Class\" />\r\n        <option value=\"HTML File\" />\r\n      </list>\r\n    </option>\r\n  </component>\r\n  <component name=\"Git.Settings\">\r\n    <favorite-branches>\r\n      <branch-storage>\r\n        <map>\r\n          <entry type=\"LOCAL\">\r\n            <value>\r\n              <list>\r\n                <branch-info repo=\"$PROJECT_DIR$/../../\" source=\"dev\" />\r\n              </list>\r\n            </value>\r\n          </entry>\r\n        </map>\r\n      </branch-storage>\r\n    </favorite-branches>\r\n    <option name=\"RECENT_GIT_ROOT_PATH\" value=\"$PROJECT_DIR$\" />\r\n    <option name=\"ROOT_SYNC\" value=\"DONT_SYNC\" />\r\n  </component>\r\n  <component name=\"JpbToolWindowState\">\r\n    <option name=\"myId2FirstActivated\">\r\n      <map>\r\n        <entry key=\"com.haulmont.jpb.jpaInspector\" value=\"true\" />\r\n        <entry key=\"com.haulmont.jpb.jpaPalette\" value=\"true\" />\r\n        <entry key=\"com.haulmont.jpb.jpaStructure\" value=\"true\" />\r\n      </map>\r\n    </option>\r\n    <option name=\"myId2Visible\">\r\n      <map>\r\n        <entry key=\"com.haulmont.jpb.jpaInspector\" value=\"true\" />\r\n        <entry key=\"com.haulmont.jpb.jpaPalette\" value=\"true\" />\r\n        <entry key=\"com.haulmont.jpb.jpaStructure\" value=\"true\" />\r\n      </map>\r\n    </option>\r\n  </component>\r\n  <component name=\"MarkdownSettingsMigration\">\r\n    <option name=\"stateVersion\" value=\"1\" />\r\n  </component>\r\n  <component name=\"MavenImportPreferences\">\r\n    <option name=\"generalSettings\">\r\n      <MavenGeneralSettings>\r\n        <option name=\"useMavenConfig\" value=\"true\" />\r\n      </MavenGeneralSettings>\r\n    </option>\r\n  </component>\r\n  <component name=\"ProjectId\" id=\"2F8F8ogW3eOMF50hGpTFnhuR57g\" />\r\n  <component name=\"ProjectLevelVcsManager\" settingsEditedManually=\"true\" />\r\n  <component name=\"ProjectViewState\">\r\n    <option name=\"hideEmptyMiddlePackages\" value=\"true\" />\r\n    <option name=\"showLibraryContents\" value=\"true\" />\r\n  </component>\r\n  <component name=\"PropertiesComponent\"><![CDATA[{\r\n  \"keyToString\": {\r\n    \"DefaultHtmlFileTemplate\": \"HTML File\",\r\n    \"RunOnceActivity.OpenProjectViewOnStart\": \"true\",\r\n    \"RunOnceActivity.ShowReadmeOnStart\": \"true\",\r\n    \"SHARE_PROJECT_CONFIGURATION_FILES\": \"true\",\r\n    \"last_opened_file_path\": \"C:/proyectos/BSL\"\r\n  }\r\n}]]></component>\r\n  <component name=\"RecentsManager\">\r\n    <key name=\"CopyFile.RECENT_KEYS\">\r\n      <recent name=\"C:\\proyectos\" />\r\n    </key>\r\n    <key name=\"MoveFile.RECENT_KEYS\">\r\n      <recent name=\"C:\\proyectos\\BSL\\src\\main\\resources\\static\" />\r\n    </key>\r\n  </component>\r\n  <component name=\"RunManager\">\r\n    <configuration name=\"BslApplication\" type=\"Application\" factoryName=\"Application\" temporary=\"true\" nameIsGenerated=\"true\">\r\n      <option name=\"MAIN_CLASS_NAME\" value=\"com.grupo1.BSL.BslApplication\" />\r\n      <module name=\"BSL\" />\r\n      <extension name=\"coverage\">\r\n        <pattern>\r\n          <option name=\"PATTERN\" value=\"com.grupo1.BSL.*\" />\r\n          <option name=\"ENABLED\" value=\"true\" />\r\n        </pattern>\r\n      </extension>\r\n      <method v=\"2\">\r\n        <option name=\"Make\" enabled=\"true\" />\r\n      </method>\r\n    </configuration>\r\n    <recent_temporary>\r\n      <list>\r\n        <item itemvalue=\"Application.BslApplication\" />\r\n      </list>\r\n    </recent_temporary>\r\n  </component>\r\n  <component name=\"SpellCheckerSettings\" RuntimeDictionaries=\"0\" Folders=\"0\" CustomDictionaries=\"0\" DefaultDictionary=\"application-level\" UseSingleDictionary=\"true\" transferred=\"true\" />\r\n  <component name=\"TaskManager\">\r\n    <task active=\"true\" id=\"Default\" summary=\"Default task\">\r\n      <changelist id=\"a247edb4-acfc-4b52-8972-9f60fa09c594\" name=\"Changes\" comment=\"\" />\r\n      <created>1663865649801</created>\r\n      <option name=\"number\" value=\"Default\" />\r\n      <option name=\"presentableId\" value=\"Default\" />\r\n      <updated>1663865649801</updated>\r\n    </task>\r\n    <servers />\r\n  </component>\r\n  <component name=\"Vcs.Log.Tabs.Properties\">\r\n    <option name=\"TAB_STATES\">\r\n      <map>\r\n        <entry key=\"MAIN\">\r\n          <value>\r\n            <State />\r\n          </value>\r\n        </entry>\r\n      </map>\r\n    </option>\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/workspace.xml b/.idea/workspace.xml
+--- a/.idea/workspace.xml	(revision 11b04d01b2ba10b1fef3cec4394ed209e25faca9)
++++ b/.idea/workspace.xml	(date 1664154265288)
+@@ -4,29 +4,15 @@
+     <option name="autoReloadType" value="SELECTIVE" />
+   </component>
+   <component name="ChangeListManager">
+-    <list default="true" id="a247edb4-acfc-4b52-8972-9f60fa09c594" name="Changes" comment="">
+-      <change afterPath="$PROJECT_DIR$/src/main/java/com/grupo1/BSL/security/SecurityConfig.java" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/target/classes/com/grupo1/BSL/security/SecurityConfig.class" afterDir="false" />
++    <list default="true" id="a247edb4-acfc-4b52-8972-9f60fa09c594" name="Changes" comment="se crearon los metodos setpassword  y getpassword">
+       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/main/java/com/grupo1/BSL/BslApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/grupo1/BSL/BslApplication.java" afterDir="false" />
+       <change beforePath="$PROJECT_DIR$/src/main/java/com/grupo1/BSL/controller/FrontController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/grupo1/BSL/controller/FrontController.java" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/main/java/com/grupo1/BSL/controller/UsuarioController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/grupo1/BSL/controller/UsuarioController.java" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/main/java/com/grupo1/BSL/models/Empleado.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/grupo1/BSL/models/Empleado.java" afterDir="false" />
+       <change beforePath="$PROJECT_DIR$/src/main/java/com/grupo1/BSL/service/EmpresaService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/grupo1/BSL/service/EmpresaService.java" afterDir="false" />
+       <change beforePath="$PROJECT_DIR$/src/main/java/com/grupo1/BSL/service/UsuarioService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/grupo1/BSL/service/UsuarioService.java" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/agregarEmpleado.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/agregarEmpleado.html" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/verEmpleados.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/verEmpleados.html" afterDir="false" />
+       <change beforePath="$PROJECT_DIR$/src/main/resources/templates/verEmpresas.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/verEmpresas.html" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/system.properties" beforeDir="false" afterPath="$PROJECT_DIR$/system.properties" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/target/classes/com/grupo1/BSL/BslApplication.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/grupo1/BSL/BslApplication.class" afterDir="false" />
+       <change beforePath="$PROJECT_DIR$/target/classes/com/grupo1/BSL/controller/FrontController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/grupo1/BSL/controller/FrontController.class" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/target/classes/com/grupo1/BSL/controller/UsuarioController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/grupo1/BSL/controller/UsuarioController.class" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/target/classes/com/grupo1/BSL/models/Empleado.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/grupo1/BSL/models/Empleado.class" afterDir="false" />
+       <change beforePath="$PROJECT_DIR$/target/classes/com/grupo1/BSL/service/EmpresaService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/grupo1/BSL/service/EmpresaService.class" afterDir="false" />
+       <change beforePath="$PROJECT_DIR$/target/classes/com/grupo1/BSL/service/UsuarioService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/grupo1/BSL/service/UsuarioService.class" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/target/classes/templates/agregarEmpleado.html" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/templates/agregarEmpleado.html" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/target/classes/templates/verEmpleados.html" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/templates/verEmpleados.html" afterDir="false" />
+       <change beforePath="$PROJECT_DIR$/target/classes/templates/verEmpresas.html" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/templates/verEmpresas.html" afterDir="false" />
+     </list>
+     <option name="SHOW_DIALOG" value="false" />
+@@ -50,6 +36,13 @@
+             <value>
+               <list>
+                 <branch-info repo="$PROJECT_DIR$/../../" source="dev" />
++              </list>
++            </value>
++          </entry>
++          <entry type="REMOTE">
++            <value>
++              <list>
++                <branch-info repo="$PROJECT_DIR$" source="heroku/main" />
+               </list>
+             </value>
+           </entry>
+@@ -150,4 +143,9 @@
+       </map>
+     </option>
+   </component>
++  <component name="VcsManagerConfiguration">
++    <MESSAGE value="se" />
++    <MESSAGE value="se crearon los metodos setpassword  y getpassword" />
++    <option name="LAST_COMMIT_MESSAGE" value="se crearon los metodos setpassword  y getpassword" />
++  </component>
+ </project>
+\ No newline at end of file
+Index: target/classes/templates/verEmpresas.html
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><!DOCTYPE html>\r\n<html lang=\"en\" xmlns:th=\"http://www.thymeleaf.org\">\r\n\r\n<head>\r\n    <title>Lista de Empresas </title>\r\n    <meta charset=\"utf-8\">\r\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\r\n    <link rel=\"stylesheet\" href=\"https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css\">\r\n    <link rel=\"stylesheet\" href=\"https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css\">\r\n    <script src=\"https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js\"></script>\r\n    <script src=\"https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js\"></script>\r\n    <script src=\"https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js\"></script>\r\n    <style>\r\n    a{\r\n    color:white;\r\n    }\r\n    a:hover {\r\n    color: black;\r\n    text-decoration:none;\r\n    }\r\n</style>\r\n</head>\r\n<body>\r\n<div class=\"container\">\r\n    <button type=\"button\" class=\"btn btn-danger\" style=\"float:right\"><a th:href=\"@{/logout}\">Cerrar Sesión</a></button>\r\n\r\n    <h1> Lista de Empresas</h1>\r\n    <!--Dibujamos la tabla-->\r\n\r\n    <table class=\" table table-bordered border-primary table-hover table-success \">\r\n    <tr>\r\n        <th>ID</th>\r\n        <th>Nombre</th>\r\n        <th>Dirección</th>\r\n        <th>Telefono</th>\r\n        <th>NIT</th>\r\n        <th>Eliminar</th>\r\n        <th>Empleados</th>\r\n        <th>Movimientos</th>\r\n\r\n\r\n\r\n\r\n    </tr>\r\n\r\n      <tr th:each=\"empresa : ${emplist}\">\r\n        <td th:text=\"${empresa.id}\"></td>\r\n        <td th:text=\"${empresa.nombre}\"></td>\r\n        <td th:text=\"${empresa.direccion}\"></td>\r\n        <td th:text=\"${empresa.telefono}\"></td>\r\n        <td th:text=\"${empresa.NIT}\"></td>\r\n          <td><button type=\"button\" class=\"btn btn-danger\"><a th:href=\"@{/EliminarEmpresa/{id}(id=${empresa.id})}\">Eliminar</a></button></td>\r\n          <td><button type=\"button\" class=\"btn btn-danger\"><a th:href=\"@{/Empresa/{id}/Empleados (id=${empresa.id})}\">Ver</a></button></td>\r\n          <td><button type=\"button\" class=\"btn btn-warning\"><a th:href=\"@{/VerMovimientos/{idEmpresa} (idEmpresa=${empresa.id})}\">Ver</a></button></td>\r\n\r\n\r\n    </tr>\r\n</table>\r\n\r\n    <!-- vamos a crear un boton que sirva para agregar nuevas empresas -->\r\n    <button type=\"button\" class=\"btn btn-info\"><a th:href=\"@{/AgregarEmpresa}\">Agregar Nueva Empresa</a></button>\r\n    <br><br>\r\n    <button type=\"button\" class=\"btn btn-primary\"><a th:href=\"@{/VerEmpleados}\">Ver lista de Empleados</a></button>\r\n\r\n</div>\r\n\r\n\r\n\r\n\r\n</body>\r\n</html>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/target/classes/templates/verEmpresas.html b/target/classes/templates/verEmpresas.html
+--- a/target/classes/templates/verEmpresas.html	(revision 11b04d01b2ba10b1fef3cec4394ed209e25faca9)
++++ b/target/classes/templates/verEmpresas.html	(date 1664141083557)
+@@ -50,7 +50,7 @@
+         <td th:text="${empresa.telefono}"></td>
+         <td th:text="${empresa.NIT}"></td>
+           <td><button type="button" class="btn btn-danger"><a th:href="@{/EliminarEmpresa/{id}(id=${empresa.id})}">Eliminar</a></button></td>
+-          <td><button type="button" class="btn btn-danger"><a th:href="@{/Empresa/{id}/Empleados (id=${empresa.id})}">Ver</a></button></td>
++          <td><button type="button" class="btn btn-danger"><a th:href="@{/Empresa/{id}/Empleados(id=${empresa.id})}">Ver</a></button></td>
+           <td><button type="button" class="btn btn-warning"><a th:href="@{/VerMovimientos/{idEmpresa} (idEmpresa=${empresa.id})}">Ver</a></button></td>
+ 
+ 

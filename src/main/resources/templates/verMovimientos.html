@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Lista de Movimientos </title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <style>
+    a{
+    color:white;
+    }
+    a:hover {
+    color: black;
+    text-decoration:none;
+    }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+    <h1> Lista de Movimientos</h1>
+
+    <table class="table table-bordered border-primary table-hover table-success">
+    <tr>
+        <th>ID</th>
+        <th class="text-right">Valor</th>
+        <th>Concepto</th>
+        <th>Usuario Responsable</th>
+        <th>Eliminar</th>
+    </tr>
+
+    <!--Llenamos la tabla dibujada-->
+    <!--En nuestro controller, creamos en viewMovimientos un modelo con un atributo llamado movlist donde esta guardada la lista de todos los movimientos-->
+    <tr th:each="movimiento : ${movlist}">
+        <td th:text="${movimiento.id}"></td>
+        <td class="text-right" th:text="${#numbers.formatCurrency(movimiento.monto)}"></td>
+        <td th:if="${movimiento.concepto=='1'}">Papeleria</td>
+        <td th:if="${movimiento.concepto=='2'}">Servicios Publicos/privados</td>
+        <td th:if="${movimiento.concepto=='3'}">Operativos</td>
+        <td th:if="${movimiento.concepto=='4'}">Caja Menor</td>
+        <td th:if="${movimiento.concepto=='5'}">Tributario</td>
+        <td th:if="${movimiento.concepto=='6'}">Mobiliario</td>
+        <td th:if="${movimiento.concepto=='7'}">Maquinaria y Equipo</td>
+        <td th:if="${movimiento.concepto=='8'}">Nomina</td>
+        <td th:text="${movimiento.usuario.nombre}"></td>
+        <td><button type="button" class="btn btn-danger"><a th:href="@{/EliminarMovimiento/{id}(id=${movimiento.id})}">Eliminar</a></button></td>
+    </tr>
+</table>
+    <!-- vamos a crear un boton que sirva para agregar nuevos movimientos -->
+    <button type="button" class="btn btn-info"><a th:href="@{/AgregarMovimiento/{idEmpresa}(idEmpresa=${idEmpresa})}">Agregar Nuevo Movimiento</a></button>
+    <br><br>
+    <!-- boton que me lleva a la lista de empresas -->
+    <button type="button" class="btn btn-primary"><a th:href="@{/VerEmpresas}">Ver lista de Empresas</a></button>
+    <br><br>
+    <!-- boton que me lleva a la lista de empleados -->
+    <button type="button" class="btn btn-primary"><a th:href="@{/VerEmpleados}">Ver lista de Empleados</a></button>
+</div>
+
+
+</body>
+</html>

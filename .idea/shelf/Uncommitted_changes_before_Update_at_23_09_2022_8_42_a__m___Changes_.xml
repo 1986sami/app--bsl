@@ -1,0 +1,9 @@
+<changelist name="Uncommitted_changes_before_Update_at_23_09_2022_8_42_a__m__[Changes]" date="1663940573790" recycled="false" toDelete="true">
+  <option name="PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_23_09_2022_8_42_a__m__[Changes]/shelved.patch" />
+  <option name="DESCRIPTION" value="Uncommitted changes before Update at 23/09/2022 8:42 a. m. [Changes]" />
+  <binary>
+    <option name="BEFORE_PATH" value="target/classes/com/grupo1/BSL/service/MovimientoService.class" />
+    <option name="AFTER_PATH" value="target/classes/com/grupo1/BSL/service/MovimientoService.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_23_09_2022_8_42_a__m__[Changes]/MovimientoService.class" />
+  </binary>
+</changelist>
